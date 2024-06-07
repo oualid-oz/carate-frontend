@@ -37,6 +37,13 @@ export const addNewCar = ({ token, payload }) =>
       Authorization: `Bearer ${token}`,
     },
   }).then((res) => res.data);
+// Edit car API
+export const editCar = ({ token, carId, payload }) =>
+    API.put(`${API_ROUTES.cars.root}/${carId}`, payload, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }).then((res) => res.data);
 // get cars by user API
 export const fetchCarsByUser = ({ username, token }) =>
   API.get(`${API_ROUTES.cars.user}/${username}`, {

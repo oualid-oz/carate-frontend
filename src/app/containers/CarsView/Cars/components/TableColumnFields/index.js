@@ -1,7 +1,8 @@
 import { FormattedMessage } from "react-intl";
-import { Input } from "antd";
+import {Button, Dropdown, Input, Menu} from "antd";
 import messages from "../../../../messages";
 import { PDT_RULES } from "../../../../../rules";
+import {DownloadOutlined, EyeOutlined, MoreOutlined} from "@ant-design/icons";
 
 export const editCarFields = () => [
   {
@@ -77,3 +78,30 @@ export const editCarFields = () => [
     rules: [PDT_RULES.required],
   },
 ];
+export const Actions = ({ onActionClick }) => {
+  return (
+      <Dropdown
+          overlay={
+            <Menu onClick={onActionClick}>
+              <Menu.Item
+                  key="viewDetails"
+                  icon={<EyeOutlined className="align-middle" />}
+              >
+                <FormattedMessage {...messages.details} />
+              </Menu.Item>
+              <Menu.Item
+                  key="editCar"
+                  icon={<DownloadOutlined className="align-middle" />}
+              >
+                <FormattedMessage {...messages.edit} />
+              </Menu.Item>
+            </Menu>
+          }
+          trigger={["click"]}
+      >
+        <Button type="text" className="btn-secondary bg-transparent text-white">
+          <MoreOutlined />
+        </Button>
+      </Dropdown>
+  );
+};

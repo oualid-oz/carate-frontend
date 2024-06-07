@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {
   Button,
   Empty,
@@ -7,13 +7,14 @@ import {
   Spin,
   notification,
 } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined} from "@ant-design/icons";
 import { FormattedMessage } from "react-intl";
 import messages from "../../messages";
 import EditCarForm from "./components/EditCarForm";
 import ShowCarForm from "./components/ShowCarFrom";
+import { Actions } from "./components/TableColumnFields"
 
-import { addNewCar, fetchCarsByUser } from "../../../api";
+import { addNewCar, editCar, fetchCarsByUser } from "../../../api";
 
 function Cars() {
   const [addCarModal, setAddCarModal] = useState(false);
@@ -25,25 +26,49 @@ function Cars() {
   const handleAddCar = () => {
     setAddCarModal(true);
   };
-  const handleShowCar = (car) => {
+  const handleShowCar = useCallback((car) => {
     setCarInfo(car);
     setShowCarModal(true);
-  };
-  const closeShowCar = (car) => {
+  }, []);
+  const closeShowCar = () => {
     setShowCarModal(false);
     setCarInfo({});
   };
-  const onValidateAction = (e) => {
-    addCar(e);
+  const onValidateAction = (payload) => {
+    addCar(payload);
   };
   const onCancelAction = () => {
     setAddCarModal(false);
   };
+  const onEditAction = useCallback((car) => {
+    setCarInfo(car);
+    handleAddCar(true);
+  }, [])
+  const handleActionClick = useCallback(
+      (action, car) => {
+        switch (action.key) {
+          case "viewDetails":
+            console.log(car);
+            handleShowCar(car);
+            break;
+          case "editCar":
+            debugger;
+            onEditAction(car);
+            break;
+          default:
+            break;
+        }
+      },
+      [handleShowCar, onEditAction],
+  );
 
   const addCar = async (payload) => {
     try {
       const token = localStorage.getItem("token");
-      await addNewCar({ token, payload });
+      if (editCarInfos?.id) {
+        const carId = editCarInfos?.id;
+        await editCar({token, carId, payload});
+      }else await addNewCar({ token, payload });
       setAddCarModal(false);
       fetchCars();
       notification.success({
@@ -103,12 +128,7 @@ function Cars() {
                     </span>
                   </div>
                   <div className="flex justify-center">
-                    <Button
-                      className="btn-secondary bg-transparent text-white"
-                      onClick={handleShowCar.bind(this, car)}
-                    >
-                      Show more
-                    </Button>
+                    <Actions onActionClick={action => handleActionClick(action, car)} />
                   </div>
                 </div>
                 <div className="">

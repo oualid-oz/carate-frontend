@@ -79,4 +79,12 @@ export default defineMessages({
     id: `${scope}.isYear`,
     defaultMessage: "This field must be a year",
   },
+  details: {
+    id: `${scope}.details`,
+    defaultMessage: "Details",
+  },
+  edit: {
+    id: `${scope}.edit`,
+    defaultMessage: "Edit",
+  },
 });

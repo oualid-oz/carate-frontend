@@ -9,6 +9,7 @@ import {
   LoginOutlined,
   LogoutOutlined,
   ProfileOutlined,
+  FormOutlined,
 } from "@ant-design/icons";
 import Show from "../../components/Show";
 
@@ -75,7 +76,7 @@ function MainLayout() {
               <Menu.Item key={"/login"} icon={<LoginOutlined />}>
                 <Link to="/login">Log In</Link>
               </Menu.Item>
-              <Menu.Item key={"/signup"}>
+              <Menu.Item key={"/signup"} icon={<FormOutlined />}>
                 <Link to="/signup">Sign Up</Link>
               </Menu.Item>
             </Show>
